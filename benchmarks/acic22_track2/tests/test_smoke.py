@@ -90,6 +90,7 @@ requires_data = pytest.mark.skipif(
 )
 
 
+@requires_data
 def test_selection_is_deterministic_and_nested():
     five = run.select_cohorts(5, seed=42)
     ten = run.select_cohorts(10, seed=42)
