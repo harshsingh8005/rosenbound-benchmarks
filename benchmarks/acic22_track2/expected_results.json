@@ -1,0 +1,12 @@
+{
+  "acic22_track2_v3_full": {
+    "bias": 19.26,
+    "rmse": 28.80,
+    "coverage_percent": 77.53,
+    "average_width": 78.04,
+    "n_cohorts": 3400,
+    "seconds_per_dataset": 40.86,
+    "source_claim_date": "2026-05-03",
+    "source_reference": "CLAUDE.md — ACIC22 Track-2 V3 LOCKED FULL (2026-05-03)"
+  }
+}

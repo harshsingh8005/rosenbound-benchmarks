@@ -1,0 +1,36 @@
+# Python
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.egg-info/
+**/build/
+**/dist/
+
+# Virtual environments
+**/venv/
+**/.venv/
+**/env/
+
+# Jupyter
+**/.ipynb_checkpoints/
+
+# Datasets — never committed; see data/{source}/README.md for acquisition
+**/data/acic22/*.csv
+**/data/acic22/*.zip
+**/data/mimic_iv/**
+!**/data/mimic_iv/README.md
+
+# Local environment / secrets
+**/.env
+**/.envrc
+
+# Scratch + working directories
+**/tmp/
+**/scratch/
+dd_logs/
+
+# OS + editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

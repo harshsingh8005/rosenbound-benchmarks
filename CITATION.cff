@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it as below."
+title: "Rosenbound Benchmarks — Reproducers for Clinical AI Platform Claims"
+version: "0.1.0"
+date-released: "2026-07-05"
+authors:
+  - family-names: Singh
+    given-names: Harsh
+    affiliation: Rosenbound
+repository-code: "https://github.com/harshsingh8005/rosenbound-benchmarks"
+license: MIT
+keywords:
+  - clinical AI
+  - causal inference
+  - benchmarks
+  - reproducibility
+  - MIMIC-IV
+  - ACIC22
+  - FAERS

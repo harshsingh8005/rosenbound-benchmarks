@@ -1,0 +1,9 @@
+{
+  "w1_in_hospital_mortality": {
+    "test_auroc": 0.9476,
+    "calibrator": "beta_bayes",
+    "expected_ece": 0.0024,
+    "source_claim_date": "2026-05-03",
+    "source_reference": "CLAUDE.md — W-lane portfolio W1 mortality"
+  }
+}
