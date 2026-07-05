@@ -32,10 +32,6 @@ _ALLOWED = {
     "tools/check_patent_scope.py",
 }
 
-# The MIMIC reproducer is maintained separately; this checker guards the tree
-# this reproducer owns and does not police a sibling benchmark's files.
-_SKIP_PREFIXES = ("benchmarks/mimic_iv_w1_mortality/",)
-
 _SCAN_SUFFIXES = {".py", ".ipynb", ".md", ".json", ".yml", ".yaml", ".cff", ".txt"}
 _PATTERN = re.compile(r"\b(" + "|".join(_FORBIDDEN) + r")\b", re.IGNORECASE)
 
@@ -52,8 +48,6 @@ def main() -> int:
     offences: list[str] = []
     for rel in _tracked_files():
         if rel in _ALLOWED or Path(rel).suffix.lower() not in _SCAN_SUFFIXES:
-            continue
-        if rel.startswith(_SKIP_PREFIXES):
             continue
         path = root / rel
         try:
