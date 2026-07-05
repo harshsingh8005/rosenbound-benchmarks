@@ -1,0 +1,81 @@
+name: reproduce
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1"
+
+jobs:
+  acic22_track2:
+    name: ACIC22 Track-2
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Reproduce
+        working-directory: benchmarks/acic22_track2
+        run: python run.py --ci
+
+      - name: Upload expected-results contract
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: acic22_track2-expected-results
+          path: benchmarks/acic22_track2/expected_results.json
+
+  mimic_iv_w1_mortality:
+    name: MIMIC-IV W1 mortality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check PhysioNet credentials
+        id: creds
+        env:
+          PHYSIONET_USER: ${{ secrets.PHYSIONET_USER }}
+          PHYSIONET_PASS: ${{ secrets.PHYSIONET_PASS }}
+        run: |
+          if [ -z "$PHYSIONET_USER" ] || [ -z "$PHYSIONET_PASS" ]; then
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "PhysioNet credentials not configured; skipping the MIMIC-IV job."
+            echo "This is expected on public forks. See data/mimic_iv/README.md."
+          else
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Python
+        if: steps.creds.outputs.available == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        if: steps.creds.outputs.available == 'true'
+        run: pip install -r requirements.txt
+
+      - name: Reproduce
+        if: steps.creds.outputs.available == 'true'
+        working-directory: benchmarks/mimic_iv_w1_mortality
+        env:
+          PHYSIONET_USER: ${{ secrets.PHYSIONET_USER }}
+          PHYSIONET_PASS: ${{ secrets.PHYSIONET_PASS }}
+        run: python run.py --ci
+
+      - name: Upload expected-results contract
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mimic_iv_w1_mortality-expected-results
+          path: benchmarks/mimic_iv_w1_mortality/expected_results.json
