@@ -19,10 +19,13 @@ is not exercised by any code here.
 
 ## Cohort filters
 
-**ACIC22 Track-2.** The reproducer runs over the full 3,400-cohort canonical
-with no cohort exclusions — every cohort in the Track-2 release is scored, and
-the reported metrics are aggregated across all of them. The V3 lock supersedes
-an earlier V2 result on the same canonical.
+**ACIC22 Track-2.** The reproducer scores a fixed, seeded 100-cohort sample of
+the 3,400-cohort release by default; `--full` runs every cohort with no
+exclusions. Each cohort's panel is reduced to a cross-sectional problem by a
+practice-level difference-in-differences change score (post-period mean outcome
+minus pre-period mean), and the effect on the treated is estimated on that
+change score. The scored estimand is the sample average treatment effect on the
+treated (SATT), taken from the challenge's estimand-truth table.
 
 **MIMIC-IV W1.** The in-hospital mortality cohort is derived from the 546K
 MIMIC-IV v3.1 admissions by admission-level inclusion filters (adult admissions
