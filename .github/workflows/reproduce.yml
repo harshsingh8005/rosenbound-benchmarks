@@ -60,37 +60,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check PhysioNet credentials
-        id: creds
-        env:
-          PHYSIONET_USER: ${{ secrets.PHYSIONET_USER }}
-          PHYSIONET_PASS: ${{ secrets.PHYSIONET_PASS }}
-        run: |
-          if [ -z "$PHYSIONET_USER" ] || [ -z "$PHYSIONET_PASS" ]; then
-            echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "PhysioNet credentials not configured; skipping the MIMIC-IV job."
-            echo "This is expected on public forks. See data/mimic_iv/README.md."
-          else
-            echo "available=true" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Set up Python
-        if: steps.creds.outputs.available == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
 
       - name: Install dependencies
-        if: steps.creds.outputs.available == 'true'
         run: pip install -r requirements.txt
 
-      - name: Reproduce
-        if: steps.creds.outputs.available == 'true'
+      - name: Hygiene checks
+        run: |
+          python tools/check_patent_scope.py
+          python tools/check_comment_hygiene.py
+
+      - name: Unit and smoke tests
+        run: pytest benchmarks/mimic_iv_w1_mortality/tests/ -v
+
+      - name: Fetch demo data (skips numeric reproduction if unavailable)
+        id: data
+        run: |
+          if python data/mimic_iv/fetch.py; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "MIMIC-IV demo download failed; numeric reproduction skipped."
+            echo "See data/mimic_iv/README.md."
+          fi
+
+      - name: Reproduce and assert contract
+        if: steps.data.outputs.available == 'true'
         working-directory: benchmarks/mimic_iv_w1_mortality
-        env:
-          PHYSIONET_USER: ${{ secrets.PHYSIONET_USER }}
-          PHYSIONET_PASS: ${{ secrets.PHYSIONET_PASS }}
         run: python run.py --ci
 
       - name: Upload expected-results contract

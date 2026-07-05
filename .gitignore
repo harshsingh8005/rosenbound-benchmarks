@@ -19,6 +19,10 @@
 **/data/acic22/*.zip
 **/data/mimic_iv/**
 !**/data/mimic_iv/README.md
+!**/data/mimic_iv/fetch.py
+
+# Reproducer run outputs
+**/benchmarks/*/results.json
 
 # Local environment / secrets
 **/.env

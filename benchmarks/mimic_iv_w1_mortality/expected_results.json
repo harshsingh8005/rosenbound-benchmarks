@@ -1,9 +1,35 @@
 {
-  "w1_in_hospital_mortality": {
-    "test_auroc": 0.9476,
-    "calibrator": "beta_bayes",
-    "expected_ece": 0.0024,
-    "source_claim_date": "2026-05-03",
-    "source_reference": "CLAUDE.md — W-lane portfolio W1 mortality"
+  "canonical_run": {
+    "dataset": "MIMIC-IV Clinical Database Demo v2.2 (open access, ODbL)",
+    "n_admissions": 128,
+    "cohort": "first ICU stay per hospital admission",
+    "label": "in-hospital mortality (hospital_expire_flag)",
+    "seed": 42,
+    "n_seeds": 40,
+    "folds": 5,
+    "protocol": "metrics averaged over 40 seed repeats of pooled out-of-fold 5-fold cross-validation"
+  },
+  "reproducer_targets": {
+    "demo": {
+      "auroc":             { "target": 0.6642, "tol": 0.05 },
+      "average_precision": { "target": 0.2284, "tol": 0.05 },
+      "brier":             { "target": 0.1047, "tol": 0.02 },
+      "ece":               { "target": 0.0491, "tol": 0.02 }
+    },
+    "note": "Numbers are the calibrated metrics on the 128-admission demo cohort. The demo is small, so single-split metrics are unstable; the cross-validated, multi-seed protocol above is what these targets and their tolerances describe. Demo numbers do NOT match the full-corpus figures below."
+  },
+  "internal_reference": {
+    "note": "The full internal MIMIC-IV pipeline (546K admissions, credentialed access) achieves the figures below with additional risk-stratification and calibration components beyond the LightGBM + Beta calibration reproduced here. They are recorded for reference and are not directly reproducible in this repository, which commits no credentialed data; see data/mimic_iv/README.md for the credentialed path.",
+    "w1_full_corpus_lock": {
+      "auroc": 0.9476,
+      "ece_beta_bayes": 0.0024,
+      "calibrator": "beta_bayes",
+      "cohort_size": 546000,
+      "source_claim_date": "2026-05-03"
+    }
+  },
+  "runtime_targets": {
+    "smoke_wall_max_seconds": 180,
+    "full_wall_max_seconds": 1800
   }
 }
