@@ -37,10 +37,6 @@ _COMPILED = [(re.compile(p, re.IGNORECASE), why) for p, why in _PATTERNS]
 _SCAN_SUFFIXES = {".py", ".ipynb", ".md", ".json", ".yml", ".yaml", ".cff", ".txt"}
 _SELF = "tools/check_comment_hygiene.py"
 
-# The MIMIC reproducer is maintained separately; this checker guards the tree
-# this reproducer owns and does not police a sibling benchmark's files.
-_SKIP_PREFIXES = ("benchmarks/mimic_iv_w1_mortality/",)
-
 
 def _tracked_files() -> list[str]:
     out = subprocess.run(
@@ -55,8 +51,6 @@ def main() -> int:
     for rel in _tracked_files():
         # The checker itself necessarily contains the very patterns it hunts.
         if rel == _SELF or Path(rel).suffix.lower() not in _SCAN_SUFFIXES:
-            continue
-        if rel.startswith(_SKIP_PREFIXES):
             continue
         path = root / rel
         try:
