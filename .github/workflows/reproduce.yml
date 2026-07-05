@@ -23,7 +23,27 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Reproduce
+      - name: Hygiene checks
+        run: |
+          python tools/check_patent_scope.py
+          python tools/check_comment_hygiene.py
+
+      - name: Unit and smoke tests
+        run: pytest benchmarks/acic22_track2/tests/ -v
+
+      - name: Fetch data (skips numeric reproduction if unavailable)
+        id: data
+        run: |
+          if python data/acic22/fetch.py; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Track-2 data not provisioned; numeric reproduction skipped."
+            echo "The archive is a manual click-through download; see data/acic22/README.md."
+          fi
+
+      - name: Reproduce and assert contract
+        if: steps.data.outputs.available == 'true'
         working-directory: benchmarks/acic22_track2
         run: python run.py --ci
 

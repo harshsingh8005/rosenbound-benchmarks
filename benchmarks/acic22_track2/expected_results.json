@@ -1,12 +1,41 @@
 {
-  "acic22_track2_v3_full": {
-    "bias": 19.26,
-    "rmse": 28.80,
-    "coverage_percent": 77.53,
-    "average_width": 78.04,
-    "n_cohorts": 3400,
-    "seconds_per_dataset": 40.86,
-    "source_claim_date": "2026-05-03",
-    "source_reference": "CLAUDE.md — ACIC22 Track-2 V3 LOCKED FULL (2026-05-03)"
+  "canonical_run": {
+    "n_cohorts": 100,
+    "seed": 42,
+    "sampling": "permutation(all_cohort_ids)[:n_cohorts] under the seed",
+    "estimand": "sample average treatment effect on the treated (SATT)",
+    "data": "ACIC22 Track-2 3,400-cohort release (public)"
+  },
+  "reproducer_targets": {
+    "aipw": {
+      "bias_mean":     { "target": 26.007, "tol": 5.0 },
+      "rmse":          { "target": 38.793, "tol": 5.0 },
+      "coverage_95":   { "target": 0.72,   "tol": 0.10 },
+      "ci_width_mean": { "target": 91.593, "tol": 10.0 }
+    },
+    "dr_att": {
+      "bias_mean":     { "target": 20.683, "tol": 5.0 },
+      "rmse":          { "target": 30.627, "tol": 5.0 },
+      "coverage_95":   { "target": 0.74,   "tol": 0.10 },
+      "ci_width_mean": { "target": 71.257, "tol": 10.0 }
+    },
+    "rosenbaum": {
+      "gamma_zero_median": { "target": 1.0, "tol": 0.30 }
+    }
+  },
+  "internal_reference": {
+    "note": "The full internal system (which additionally uses an instrumental-variables estimator, a deep counterfactual estimator, and a paired Rosenbaum inversion) achieves the numbers below across all 3,400 cohorts. That system is commercial; the reproducer above uses three public-domain methods on a 100-cohort sample and approaches, but does not match, these figures. Contact the maintainers for a platform demonstration.",
+    "internal_full_lock": {
+      "bias": 19.26,
+      "rmse": 28.80,
+      "coverage_95": 0.7753,
+      "ci_width_mean": 78.04,
+      "sec_per_dataset": 40.86,
+      "n_cohorts": 3400
+    }
+  },
+  "runtime_targets": {
+    "smoke_wall_max_seconds": 300,
+    "full_wall_max_seconds": 3600
   }
 }

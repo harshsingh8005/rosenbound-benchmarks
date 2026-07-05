@@ -27,13 +27,16 @@ uncertainty interval. Aggregated across all cohorts:
 
 - **Bias** — mean signed error of the point estimate against the known effect.
 - **RMSE** — root-mean-square error of the point estimate.
-- **Coverage** — fraction of cohorts whose interval contains the true effect,
-  reported as a percentage.
+- **Coverage** — fraction of cohorts whose 95% interval contains the true
+  effect (a well-calibrated interval is near 0.95).
 - **Average width** — mean width of the uncertainty intervals.
 
-Bias, RMSE, and width are reported to two decimal places; coverage is reported
-as a percentage to two decimal places. The expected values are pinned in
-`benchmarks/acic22_track2/expected_results.json`.
+Each cohort's panel is reduced to a cross-sectional problem with a
+practice-level difference-in-differences change score before estimation, and
+the metrics are aggregated over a fixed, seeded cohort sample. The expected
+values and their tolerances are pinned in
+`benchmarks/acic22_track2/expected_results.json`, alongside the internal
+reference figures the closed platform reaches.
 
 ## MIMIC-IV W1 in-hospital mortality
 

@@ -8,3 +8,4 @@ seaborn>=0.13,<0.14
 jupyter>=1.0
 nbclient>=0.10
 nbformat>=5.10
+pytest>=8.0,<9
