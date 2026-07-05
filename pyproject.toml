@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+# importlib import mode gives every benchmark's identically-named test modules a
+# unique module name, so the whole tree collects in one session.
+addopts = "--import-mode=importlib"
