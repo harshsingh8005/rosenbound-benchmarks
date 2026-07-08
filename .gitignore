@@ -38,3 +38,21 @@ dd_logs/
 Thumbs.db
 .vscode/
 .idea/
+
+# AI-tool scratchpads and instruction files - never commit
+CLAUDE.md
+AGENTS.md
+.claude/
+.aider*
+.cursor/
+GEMINI.md
+COPILOT.md
+
+# Session scratchpad artifacts
+session_memory_*.md
+session_memory_appendix_*.md
+PHASE_*_REPORT.md
+PHASE_*_DIAGNOSIS.md
+FINAL_REPORT.md
+UPGRADATION PLAN/
+UPGRADATION_PLAN/
