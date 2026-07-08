@@ -31,6 +31,12 @@ _PATTERNS = [
     (r"\boption\s+b\b", "internal decision label"),
     (r"founder-locked", "internal decision label"),
     (r"CLAUDE\.md", "authoring-tool reference"),
+    (r"AGENTS\.md", "authoring-tool reference"),
+    (r"\btier\s*[0-9]", "tier label"),
+    (r"\bphase[- ][0-9]", "phase label"),
+    (r"\bsub-?agent\b", "subagent reference"),
+    (r"docs/(audits|handoffs)", "private doc reference"),
+    (r"session_memory", "session-scratchpad reference"),
 ]
 _COMPILED = [(re.compile(p, re.IGNORECASE), why) for p, why in _PATTERNS]
 

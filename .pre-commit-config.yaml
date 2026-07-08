@@ -1,0 +1,19 @@
+# Install with: pip install pre-commit && pre-commit install --hook-type pre-commit --hook-type commit-msg
+repos:
+  - repo: local
+    hooks:
+      - id: check_no_claude_attribution
+        name: No AI-attribution in files
+        entry: python tools/check_no_claude_attribution.py
+        language: system
+        pass_filenames: true
+      - id: check_comment_hygiene
+        name: No internal process labels in the tree
+        entry: python tools/check_comment_hygiene.py
+        language: system
+        pass_filenames: false
+      - id: check_commit_msg_attribution
+        name: No AI-attribution in commit messages
+        entry: python tools/check_no_claude_attribution.py --commit-msg
+        language: system
+        stages: [commit-msg]

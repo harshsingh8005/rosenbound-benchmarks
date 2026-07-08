@@ -1,0 +1,22 @@
+name: hygiene
+
+on: [push, pull_request]
+
+jobs:
+  attribution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Attribution check (tracked files)
+        run: python tools/check_no_claude_attribution.py $(git ls-files)
+
+      - name: Comment-hygiene check
+        run: python tools/check_comment_hygiene.py
+
+      - name: Patent-scope check
+        run: python tools/check_patent_scope.py
