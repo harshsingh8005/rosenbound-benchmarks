@@ -21,7 +21,7 @@
   "credentialed_public_method": {
     "auroc": null,
     "auroc_tolerance": 0.005,
-    "note": "LightGBM + Beta calibration on the full ~546K MIMIC-IV admissions, public-method pipeline only (no DCIE/proprietary components). Requires PhysioNet MIMIC-IV credentialed access; run `python run.py --credentialed` with MIMIC_IV_CREDENTIALED=1 and MIMIC_IV_PATH set. The target is unpinned: expected range 0.80-0.88 based on published 24h-window MIMIC mortality models (Harutyunyan 2019, Bhattacharya 2020); it will be pinned in a future release once reproduced on at least 3 independent credentialed runs. Until then this tier's runs are informational and not gated."
+    "note": "LightGBM + Beta calibration on the full ~546K MIMIC-IV admissions, public-method pipeline only (no proprietary components). Requires PhysioNet MIMIC-IV credentialed access; run `python run.py --credentialed` with MIMIC_IV_CREDENTIALED=1 and MIMIC_IV_PATH set. The target is unpinned: expected range 0.80-0.88 based on published 24h-window MIMIC mortality models (Harutyunyan 2019, Bhattacharya 2020); it will be pinned in a future release once reproduced on at least 3 independent credentialed runs. Until then this tier's runs are informational and not gated."
   },
   "changelog": [
     {

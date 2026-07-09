@@ -93,8 +93,8 @@ proprietary. Four levels apply across the repository:
   a MedPerf (MLCommons) container submission that runs on data-owner
   infrastructure and an ACIC Data Challenge predictions-only entry. Both routes
   are in setup; results will be linked when live.
-- **Internal (DCIE-augmented).** The proprietary Rosenbound pipeline, not
-  reproducible from this repository. Full-corpus figures are recorded under
+- **Internal (proprietary-augmented).** The proprietary Rosenbound pipeline,
+  not reproducible from this repository. Full-corpus figures are recorded under
   `internal_reference` with method-category rationale in
   [`patent_scope.md`](patent_scope.md); external verification for them goes
   through the externally-verified tier above.

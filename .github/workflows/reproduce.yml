@@ -99,3 +99,37 @@ jobs:
         with:
           name: mimic_iv_w1_mortality-expected-results
           path: benchmarks/mimic_iv_w1_mortality/expected_results.json
+
+  faers_severity:
+    name: FAERS severity
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Hygiene checks
+        run: |
+          python tools/check_patent_scope.py
+          python tools/check_comment_hygiene.py
+
+      - name: Unit and smoke tests
+        run: pytest benchmarks/faers_severity/tests/ -v
+
+      - name: Reproduce and assert contract
+        working-directory: benchmarks/faers_severity
+        run: python run.py --ci
+
+      - name: Upload expected-results contract
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: faers_severity-expected-results
+          path: benchmarks/faers_severity/expected_results.json

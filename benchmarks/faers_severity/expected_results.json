@@ -1,0 +1,30 @@
+{
+  "canonical_run": {
+    "dataset": "openFDA FAERS drug-event slice (public domain, no data-use agreement)",
+    "n_reports": 3700,
+    "cohort": "one row per adverse-event report",
+    "label": "serious (openFDA `serious` field: death | hospitalization | disability | life-threatening | congenital anomaly)",
+    "split": "temporal — receive year < 2013 train (2012), >= 2013 test (2013)",
+    "seed": 42,
+    "protocol": "leak-safe temporal split; top-K drug/reaction/indication vocabulary ranked on the training window only; LightGBM classifier, raw (uncalibrated) probabilities"
+  },
+  "reproducer_targets": {
+    "demo": {
+      "auroc": { "target": 0.8885, "tol": 0.02 },
+      "auprc": { "target": 0.9546, "tol": 0.02 },
+      "brier": { "target": 0.1462, "tol": 0.02 },
+      "ece":   { "target": 0.1142, "tol": 0.03 }
+    },
+    "note": "Metrics on the committed 3,700-report openFDA demo slice with the canonical temporal split (seed 42). The demo slice is small and its serious-label prevalence shifts across the split (0.86 train vs 0.71 test), so calibration (Brier/ECE) is loose; the public-method pipeline applies no post-hoc calibrator. Demo numbers are not the full-corpus figures below."
+  },
+  "internal_reference": {
+    "note": "The full internal FAERS severity pipeline (multi-quarter corpus, temporal split) reaches the figure below with additional proprietary Rosenbound components (a patented causal-inference layer and an ensemble head) beyond the LightGBM public-method baseline reproduced here. It is recorded for reference and is not reproducible in this repository; the public reproducer is the leak-safe LightGBM baseline only.",
+    "faers_full_corpus_lock": {
+      "auroc": 0.8872,
+      "method": "LightGBM plus a proprietary causal-inference layer, temporal split"
+    }
+  },
+  "runtime_targets": {
+    "smoke_wall_max_seconds": 120
+  }
+}
