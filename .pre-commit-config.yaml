@@ -2,9 +2,9 @@
 repos:
   - repo: local
     hooks:
-      - id: check_no_claude_attribution
+      - id: check_no_ai_attribution
         name: No AI-attribution in files
-        entry: python tools/check_no_claude_attribution.py
+        entry: python tools/check_no_ai_attribution.py
         language: system
         pass_filenames: true
       - id: check_comment_hygiene
@@ -14,6 +14,6 @@ repos:
         pass_filenames: false
       - id: check_commit_msg_attribution
         name: No AI-attribution in commit messages
-        entry: python tools/check_no_claude_attribution.py --commit-msg
+        entry: python tools/check_no_ai_attribution.py --commit-msg
         language: system
         stages: [commit-msg]
