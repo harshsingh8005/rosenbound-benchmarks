@@ -11,7 +11,7 @@ The matrix has three feature blocks:
 
 - categorical admission descriptors, one-hot encoded against the training
   vocabulary (unseen categories at apply time fall through to all-zero);
-- numeric demographics and the diagnosis count;
+- numeric demographics and the prior-history Charlson index;
 - first-24h vital and lab means, median-imputed.
 """
 
@@ -30,8 +30,8 @@ from .loader import (
     VITAL_ITEMIDS,
 )
 
-# Numeric feature columns in canonical order: demographics + diagnosis count,
-# then first-24h vitals, then first-24h labs.
+# Numeric feature columns in canonical order: demographics + prior-history
+# Charlson index, then first-24h vitals, then first-24h labs.
 _VITAL_COLS = [v for v in VITAL_ITEMIDS if v not in ("temp_c", "temp_f")] + ["temperature"]
 _NUMERIC_COLS = list(NUMERIC_BASE_COLS) + _VITAL_COLS + list(LAB_ITEMIDS.keys())
 

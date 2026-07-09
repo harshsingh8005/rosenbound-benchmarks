@@ -11,13 +11,26 @@
   },
   "reproducer_targets": {
     "demo": {
-      "auroc":             { "target": 0.6642, "tol": 0.05 },
-      "average_precision": { "target": 0.2284, "tol": 0.05 },
-      "brier":             { "target": 0.1047, "tol": 0.02 },
-      "ece":               { "target": 0.0491, "tol": 0.02 }
+      "auroc":             { "target": 0.6197, "tol": 0.05 },
+      "average_precision": { "target": 0.2069, "tol": 0.05 },
+      "brier":             { "target": 0.1056, "tol": 0.02 },
+      "ece":               { "target": 0.0472, "tol": 0.02 }
     },
     "note": "Numbers are the calibrated metrics on the 128-admission demo cohort. The demo is small, so single-split metrics are unstable; the cross-validated, multi-seed protocol above is what these targets and their tolerances describe. Demo numbers do NOT match the full-corpus figures below."
   },
+  "credentialed_public_method": {
+    "auroc": null,
+    "auroc_tolerance": 0.005,
+    "note": "LightGBM + Beta calibration on the full ~546K MIMIC-IV admissions, public-method pipeline only (no DCIE/proprietary components). Requires PhysioNet MIMIC-IV credentialed access; run `python run.py --credentialed` with MIMIC_IV_CREDENTIALED=1 and MIMIC_IV_PATH set. The target is unpinned: expected range 0.80-0.88 based on published 24h-window MIMIC mortality models (Harutyunyan 2019, Bhattacharya 2020); it will be pinned in a future release once reproduced on at least 3 independent credentialed runs. Until then this tier's runs are informational and not gated."
+  },
+  "changelog": [
+    {
+      "date": "2026-07-09",
+      "change": "Removed the leaked n_diagnoses feature (discharge-coded diagnosis count of the current admission, unknowable at the 24h prediction point) and replaced it with charlson_history, a Charlson comorbidity index (Quan 2005 code sets, Charlson 1987 weights) computed only from the subject's prior admissions discharged before the current admit time. Re-locked demo targets against the fixed 40-seed x 5-fold protocol.",
+      "demo_targets_before": { "auroc": 0.6642, "average_precision": 0.2284, "brier": 0.1047, "ece": 0.0491 },
+      "demo_targets_after":  { "auroc": 0.6197, "average_precision": 0.2069, "brier": 0.1056, "ece": 0.0472 }
+    }
+  ],
   "internal_reference": {
     "note": "The full internal MIMIC-IV pipeline (546K admissions, credentialed access) achieves the figures below with additional risk-stratification and calibration components beyond the LightGBM + Beta calibration reproduced here. They are recorded for reference and are not directly reproducible in this repository, which commits no credentialed data; see data/mimic_iv/README.md for the credentialed path.",
     "w1_full_corpus_lock": {

@@ -35,6 +35,9 @@ from src.loader import (
 )
 import run
 
+from src.charlson import charlson_index
+from src.loader import _charlson_history
+
 
 def _synthetic_frame(n: int = 240, seed: int = 0) -> pd.DataFrame:
     """A cohort-schema frame whose label depends on a few features.
@@ -53,7 +56,7 @@ def _synthetic_frame(n: int = 240, seed: int = 0) -> pd.DataFrame:
     frame["insurance"] = rng.choice(["Medicare", "Medicaid", "Other"], size=n)
     age = rng.uniform(18, 95, size=n)
     frame["anchor_age"] = age
-    frame["n_diagnoses"] = rng.poisson(10, size=n)
+    frame["charlson_history"] = rng.poisson(1.5, size=n)
     for col in vitals:
         frame[col] = rng.normal(80, 15, size=n)
     creat = rng.uniform(0.5, 4.0, size=n)
@@ -124,6 +127,57 @@ def test_evaluate_requires_both_classes_and_curve_shapes():
     curve = reliability_curve(y, p, n_bins=5)
     assert len(curve["bin_mid"]) == len(curve["frac_pos"]) == len(curve["count"])
     assert sum(curve["count"]) == len(y)
+
+
+# --------------------------------------------------------------------------
+# Charlson comorbidity feature (data-free)
+# --------------------------------------------------------------------------
+
+def test_charlson_index_weights_and_hierarchy():
+    # Empty history scores zero.
+    assert charlson_index([]) == 0
+    # Single category applies its Charlson (1987) weight.
+    assert charlson_index([("I509", 10)]) == 1          # CHF, weight 1
+    assert charlson_index([("41071", 9)]) == 1          # MI (ICD-9), weight 1
+    assert charlson_index([("B20", 10)]) == 6           # AIDS/HIV, weight 6
+    # Severity hierarchy: the severe member suppresses the milder one.
+    assert charlson_index([("C7800", 10), ("C509", 10)]) == 6   # metastatic > malignancy
+    assert charlson_index([("E102", 10), ("E119", 10)]) == 2    # complicated > uncomplicated
+    assert charlson_index([("K704", 10), ("K73", 10)]) == 3     # severe > mild liver
+
+
+def test_charlson_history_uses_only_prior_discharged_admissions():
+    # Subject 1 has three admissions; the cohort row is the middle one.
+    # Only the earlier admission (discharged before the cohort admit) may count.
+    admissions = pd.DataFrame({
+        "subject_id": [1, 1, 1],
+        "hadm_id": [10, 20, 30],
+        "admittime": pd.to_datetime(["2100-01-01", "2100-06-01", "2100-12-01"]),
+        "dischtime": pd.to_datetime(["2100-01-10", "2100-06-10", "2100-12-10"]),
+    })
+    dx = pd.DataFrame({
+        "hadm_id": [10, 20, 30],
+        "icd_code": ["I509", "C7800", "B20"],   # CHF / metastatic / AIDS
+        "icd_version": [10, 10, 10],
+    })
+    cohort = admissions[admissions["hadm_id"] == 20][["subject_id", "hadm_id", "admittime"]]
+    history = _charlson_history(dx, admissions, cohort)
+    # Prior admission 10 (CHF, weight 1) counts; the current admission's own
+    # metastatic code and the later admission 30 must not leak in.
+    assert history.loc[20] == 1
+
+
+def test_charlson_history_zero_for_first_admission():
+    admissions = pd.DataFrame({
+        "subject_id": [2],
+        "hadm_id": [40],
+        "admittime": pd.to_datetime(["2100-03-01"]),
+        "dischtime": pd.to_datetime(["2100-03-08"]),
+    })
+    dx = pd.DataFrame({"hadm_id": [40], "icd_code": ["I509"], "icd_version": [10]})
+    cohort = admissions[["subject_id", "hadm_id", "admittime"]]
+    history = _charlson_history(dx, admissions, cohort)
+    assert history.loc[40] == 0
 
 
 # --------------------------------------------------------------------------
