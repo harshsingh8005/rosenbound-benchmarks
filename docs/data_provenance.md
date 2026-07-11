@@ -35,15 +35,23 @@ treated (SATT), taken from the challenge's estimand-truth table.
 **MIMIC-IV W1.** The in-hospital mortality cohort is one row per **first ICU
 stay of a hospital admission**: ICU stays are ordered by intake time and the
 earliest is kept for each admission. The label is in-hospital expiry recorded on
-the admission (`hospital_expire_flag`). Every predictor — demographics, the
-diagnosis count, and the first-24h vital and lab aggregates — is measured within
-the first 24 hours of the ICU stay, so no post-prediction information leaks into
-the features. The one-hot vocabulary and imputation medians are fit on training
-folds only. By default the reproducer runs on the open-access **MIMIC-IV
-Clinical Database Demo v2.2** (100 patients); the identical code path runs on
-the full credentialed v3.1 corpus when pointed at it. The inclusion predicates
-and feature windows are applied deterministically so the cohort is reconstructed
-identically on every run.
+the admission (`hospital_expire_flag`). Two feature blocks are measured strictly
+within the first 24 hours of the ICU stay — the vital and lab aggregates — and
+the demographic descriptors (age, gender, admission type/location, insurance)
+are fixed at admission. The comorbidity feature, `charlson_history`, is a
+Charlson index (Quan 2005 code sets, Charlson 1987 weights) computed **only from
+the subject's prior admissions whose discharge precedes the current admit
+time**; it uses no code from the current admission. This matters because
+`hosp/diagnoses_icd` carries no timestamp and its rows are discharge-coded
+billing diagnoses — using the current admission's diagnosis count would leak
+information unavailable at the 24-hour prediction point (a leak identified in
+external review and corrected here; see `RELEASE_NOTES.md`). No post-prediction
+information enters the feature set. The one-hot vocabulary and imputation medians
+are fit on training folds only. By default the reproducer runs on the
+open-access **MIMIC-IV Clinical Database Demo v2.2** (100 patients); the
+identical code path runs on the full credentialed v3.1 corpus when pointed at
+it. The inclusion predicates and feature windows are applied deterministically
+so the cohort is reconstructed identically on every run.
 
 ## Determinism
 

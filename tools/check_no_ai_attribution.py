@@ -9,14 +9,14 @@ Two invocation modes
 --------------------
 1. Content scan (default)::
 
-       python tools/check_no_claude_attribution.py <path> [<path> ...]
+       python tools/check_no_ai_attribution.py <path> [<path> ...]
 
    Each path may be a file or a directory (scanned recursively). Every
    matching line is reported and the process exits 1.
 
 2. Commit-message scan (pre-commit ``commit-msg`` stage)::
 
-       python tools/check_no_claude_attribution.py --commit-msg <FILE>
+       python tools/check_no_ai_attribution.py --commit-msg <FILE>
 
    ``FILE`` is the path Git passes to the ``commit-msg`` hook (i.e.
    ``.git/COMMIT_EDITMSG``). The message body is scanned for the same
@@ -65,7 +65,7 @@ PATTERNS: list[tuple[str, re.Pattern[str]]] = [
 # Files that legitimately contain the literals (as detection patterns or as
 # blocked filenames in the ignore list).
 SELF_EXCLUDE = {
-    "check_no_claude_attribution.py",
+    "check_no_ai_attribution.py",
     "check_comment_hygiene.py",
     ".gitignore",
 }

@@ -19,9 +19,17 @@ Only these tables are read, all gzip-compressed CSVs:
                           insurance, ``hospital_expire_flag`` (the label).
 - ``hosp/patients``    — ``gender`` and ``anchor_age``.
 - ``hosp/labevents``   — laboratory measurements (subset of itemids below).
-- ``hosp/diagnoses_icd`` — coded diagnoses, reduced to a comorbidity count.
+- ``hosp/diagnoses_icd`` — coded diagnoses of *prior* admissions, reduced to a
+                          Charlson comorbidity index (see below).
 - ``icu/icustays``     — ICU stay windows (``intime``/``outtime``).
 - ``icu/chartevents``  — bedside vitals (subset of itemids below).
+
+``diagnoses_icd`` records carry no timestamp and reflect discharge-coded billing
+diagnoses, so the diagnoses of the *current* admission are not known at the 24h
+prediction point. The comorbidity feature (``charlson_history``) is therefore
+built only from admissions whose discharge precedes the current admission's
+admit time — history that is fully coded and available before the current stay
+begins. First-in-cohort admissions get ``charlson_history`` = 0.
 
 The loader returns numeric first-24h aggregates plus the categorical
 admission descriptors; :mod:`.features` encodes them into the model matrix.
@@ -35,6 +43,8 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+
+from .charlson import charlson_index
 
 # Length of the post-admission observation window. Predictors are aggregated
 # over ``[intime, intime + OBS_WINDOW]``; anything charted later is discarded so
@@ -85,7 +95,7 @@ _PLAUSIBLE: dict[str, tuple[float, float]] = {
 }
 
 CATEGORICAL_COLS = ("gender", "admission_type", "admission_location", "insurance")
-NUMERIC_BASE_COLS = ("anchor_age", "n_diagnoses")
+NUMERIC_BASE_COLS = ("anchor_age", "charlson_history")
 LABEL_COL = "hospital_expire_flag"
 
 
@@ -97,8 +107,8 @@ class W1Cohort:
     ----------
     frame
         One row per first ICU stay of an admission. Holds the categorical
-        admission descriptors, ``anchor_age``, ``n_diagnoses``, the first-24h
-        vital and lab means, and the ``hospital_expire_flag`` label.
+        admission descriptors, ``anchor_age``, ``charlson_history``, the
+        first-24h vital and lab means, and the ``hospital_expire_flag`` label.
     label_col
         Name of the binary in-hospital-mortality column in ``frame``.
     """
@@ -179,6 +189,42 @@ def _window_means(
     return out
 
 
+def _charlson_history(
+    dx: pd.DataFrame,
+    admissions: pd.DataFrame,
+    cohort: pd.DataFrame,
+) -> pd.Series:
+    """Charlson index over each cohort admission's fully-coded prior history.
+
+    For every cohort admission, gather the diagnoses of that subject's other
+    admissions whose ``dischtime`` precedes the cohort admission's ``admittime``
+    — the only diagnoses guaranteed coded and available before the current stay
+    begins — and score them with :func:`~.charlson.charlson_index`. Admissions
+    with no such prior history score 0.
+
+    Returns a Series indexed by ``hadm_id`` aligned to ``cohort``.
+    """
+    dx_by_hadm: dict[int, list[tuple[str, int]]] = {
+        int(hadm): list(zip(g["icd_code"], g["icd_version"]))
+        for hadm, g in dx.groupby("hadm_id", sort=False)
+    }
+    prior_by_subject: dict[int, list[tuple[int, pd.Timestamp]]] = {
+        int(subj): list(zip(g["hadm_id"].astype(int), g["dischtime"]))
+        for subj, g in admissions.groupby("subject_id", sort=False)
+    }
+
+    scores: dict[int, int] = {}
+    for row in cohort.itertuples(index=False):
+        cur_hadm = int(row.hadm_id)
+        codes: list[tuple[str, int]] = []
+        for prior_hadm, disch in prior_by_subject.get(int(row.subject_id), ()):
+            if prior_hadm == cur_hadm or pd.isna(disch) or disch >= row.admittime:
+                continue
+            codes.extend(dx_by_hadm.get(prior_hadm, ()))
+        scores[cur_hadm] = charlson_index(codes)
+    return pd.Series(scores, name="charlson_history")
+
+
 def load_w1_cohort(data_root: str | os.PathLike[str] | None = None) -> W1Cohort:
     """Build the first-24h ICU-admission W1 cohort from MIMIC-IV tables.
 
@@ -197,9 +243,10 @@ def load_w1_cohort(data_root: str | os.PathLike[str] | None = None) -> W1Cohort:
 
     admissions = _read(
         root, "hosp", "admissions",
-        usecols=["subject_id", "hadm_id", "admittime", "admission_type",
-                 "admission_location", "insurance", "hospital_expire_flag"],
-        parse_dates=["admittime"],
+        usecols=["subject_id", "hadm_id", "admittime", "dischtime",
+                 "admission_type", "admission_location", "insurance",
+                 "hospital_expire_flag"],
+        parse_dates=["admittime", "dischtime"],
     )
     patients = _read(
         root, "hosp", "patients", usecols=["subject_id", "gender", "anchor_age"]
@@ -219,12 +266,14 @@ def load_w1_cohort(data_root: str | os.PathLike[str] | None = None) -> W1Cohort:
     )
     cohort["_win_end"] = cohort["intime"] + OBS_WINDOW
 
-    # Comorbidity load: number of distinct diagnosis codes recorded for the
-    # admission (a coarse, leakage-free Charlson/Elixhauser proxy).
-    dx = _read(root, "hosp", "diagnoses_icd", usecols=["hadm_id", "icd_code"])
-    n_dx = dx.groupby("hadm_id")["icd_code"].nunique().rename("n_diagnoses")
-    cohort = cohort.merge(n_dx, on="hadm_id", how="left")
-    cohort["n_diagnoses"] = cohort["n_diagnoses"].fillna(0).astype(int)
+    # Comorbidity load: Charlson index over the subject's prior, fully-coded
+    # admission history (see module docstring). Only admissions discharged
+    # before the current admit time contribute, so no current-stay billing code
+    # can leak into the 24h feature set.
+    dx = _read(root, "hosp", "diagnoses_icd",
+               usecols=["hadm_id", "icd_code", "icd_version"])
+    history = _charlson_history(dx, admissions, cohort)
+    cohort["charlson_history"] = cohort["hadm_id"].map(history).fillna(0).astype(int)
 
     stay_window = cohort[["stay_id", "intime", "_win_end"]]
     cohort = cohort.set_index("stay_id")
