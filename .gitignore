@@ -58,3 +58,7 @@ PATCH_REPORT.md
 BENCHMARKS_PATCH/
 UPGRADATION PLAN/
 UPGRADATION_PLAN/
+
+# Read-only leakage audit artifacts - never commit (report-only deliverable)
+LEAKAGE_AUDIT.md
+_audit_scratch/
