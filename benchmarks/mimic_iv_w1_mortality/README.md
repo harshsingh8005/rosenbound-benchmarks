@@ -75,10 +75,10 @@ The canonical demo run reproduces the contract in `expected_results.json`
 
 | Metric            | Demo target | Tolerance |
 |-------------------|------------:|----------:|
-| AUROC             | 0.6642      | ±0.05     |
-| Average precision | 0.2284      | ±0.05     |
-| Brier score       | 0.1047      | ±0.02     |
-| ECE (10-bin)      | 0.0491      | ±0.02     |
+| AUROC             | 0.6197      | ±0.05     |
+| Average precision | 0.2069      | ±0.05     |
+| Brier score       | 0.1056      | ±0.02     |
+| ECE (10-bin)      | 0.0472      | ±0.02     |
 
 ## Interpretation
 
