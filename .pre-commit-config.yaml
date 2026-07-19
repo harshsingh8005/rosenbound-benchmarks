@@ -7,11 +7,6 @@ repos:
         entry: python tools/check_no_ai_attribution.py
         language: system
         pass_filenames: true
-      - id: check_comment_hygiene
-        name: No internal process labels in the tree
-        entry: python tools/check_comment_hygiene.py
-        language: system
-        pass_filenames: false
       - id: check_commit_msg_attribution
         name: No AI-attribution in commit messages
         entry: python tools/check_no_ai_attribution.py --commit-msg

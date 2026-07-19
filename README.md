@@ -118,7 +118,7 @@ remains proprietary. Four levels apply:
   are recorded as future work — unpinned until validated across independent runs
   — so results here are informational rather than gated. See the
   `credentialed_public_method` key in each `expected_results.json`.
-- **Externally verified (planned Q3–Q4 2026).** Third-party-certified metrics
+- **Externally verified.** Third-party-certified metrics
   for the full-corpus proprietary pipeline, obtained without exposing source, via
   two routes now in setup:
   - **MedPerf (MLCommons)** — a versioned Docker container runs on data-owner

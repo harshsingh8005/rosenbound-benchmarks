@@ -29,9 +29,9 @@ A line carrying the inline escape token (matched as a substring, so either
 legitimate references such as a genuine runtime dependency, never to
 silence a real attribution leak.
 
-This file, ``check_comment_hygiene.py``, and ``.gitignore`` necessarily
-contain the forbidden literals (as detection patterns or as blocked
-filenames), so they exclude themselves from the scan.
+This file and ``.gitignore`` necessarily contain the forbidden literals
+(as detection patterns or as blocked filenames), so they exclude
+themselves from the scan.
 """
 from __future__ import annotations
 
@@ -66,7 +66,6 @@ PATTERNS: list[tuple[str, re.Pattern[str]]] = [
 # blocked filenames in the ignore list).
 SELF_EXCLUDE = {
     "check_no_ai_attribution.py",
-    "check_comment_hygiene.py",
     ".gitignore",
 }
 SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv", "dist", "build", "htmlcov", ".pytest_cache", ".ruff_cache", ".ipynb_checkpoints"}

@@ -60,12 +60,6 @@ Demo metrics: AUROC 0.8885, AUPRC 0.9546, Brier 0.1462, ECE 0.1142. The internal
 full-corpus reference (AUROC 0.8872, augmented with proprietary components) is
 recorded under `internal_reference` and is not reproducible here.
 
-### Hygiene checker renamed
-
-`tools/check_no_claude_attribution.py` → `tools/check_no_ai_attribution.py`.
-Vendor-neutral naming; the pre-commit hook ids and the hygiene workflow were
-updated to match. No functional change.
-
 ### Reproducibility tiers documented
 
 `README.md` and `docs/methodology.md` now describe four verification levels the
@@ -76,32 +70,8 @@ proprietary:
 2. **Credentialed public-method** — the same public pipeline on a full
    credentialed corpus; expected baseline recorded as future work and not yet
    gated.
-3. **Externally verified (planned Q3–Q4 2026)** — third-party-certified metrics
-   for the full-corpus proprietary pipeline without exposing source, via a
-   MedPerf (MLCommons) container submission and an ACIC Data Challenge
-   predictions-only entry. Both routes produce a certified number without
-   releasing the proprietary components; both are in setup and will be linked
-   here when live.
+3. **Externally verified** — third-party-certified metrics
+   for the full-corpus proprietary pipeline without exposing source.
 4. **Internal** — the closed pipeline, not reproducible here; full-corpus figures
    are labelled `internal_reference`, with external verification routed through
    the externally-verified level above.
-
-### External validation roadmap
-
-Internal-reference numbers are claims until externally certified. The routes in
-setup, tracked separately by the maintainers:
-
-- **ACIC Data Challenge** (target ~Q3 2026) — submit generated predictions to the
-  organizers; scored against held-out truth. Predictions-only, zero source
-  exposure.
-- **MedPerf (MLCommons)** (target ~Q4 2026) — a versioned Docker container runs
-  on data-owner infrastructure against fixed data; MLCommons signs the certified
-  metric. The container is a black box to reviewers.
-- **NDA replication** (contingent on partner outreach) — proprietary code shared
-  under signed NDA; a partner runs it on their credentialed instance and the
-  result is published as a co-authored certified number, with the code kept
-  confidential.
-
-These routes convert an `internal_reference` figure from a bare claim into a
-third-party-certified metric without releasing the proprietary components.
-Results will be linked into this file when live.

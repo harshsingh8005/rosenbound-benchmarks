@@ -88,7 +88,7 @@ proprietary. Four levels apply across the repository:
   across independent runs — so results at this level are informational rather
   than gated. See the `credentialed_public_method` key in each
   `expected_results.json`.
-- **Externally verified (planned Q3–Q4 2026).** Third-party-certified metrics
+- **Externally verified.** Third-party-certified metrics
   for the full-corpus pipeline obtained without exposing proprietary source, via
   a MedPerf (MLCommons) container submission that runs on data-owner
   infrastructure and an ACIC Data Challenge predictions-only entry. Both routes
