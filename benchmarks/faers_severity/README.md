@@ -3,8 +3,8 @@
 ## What this reproduces
 
 This benchmark predicts whether an **FDA Adverse Event Reporting System
-(FAERS)** report is **serious** — an event flagged for death, hospitalization,
-disability, a life-threatening condition, or a congenital anomaly — from the
+(FAERS)** report is **serious** (an event flagged for death, hospitalization,
+disability, a life-threatening condition, or a congenital anomaly) from the
 drug, reaction, reporter, and demographic fields of the report. It is the public
 reproducer for the portfolio's FAERS severity headline number.
 
@@ -26,19 +26,19 @@ time axis; `tests/test_leak_free.py` asserts it directly.
 
 ## Methods
 
-- **Fetch** (`src/fetch.py`) — pages the openFDA `/drug/event.json` API over a
+- **Fetch** (`src/fetch.py`): pages the openFDA `/drug/event.json` API over a
   fixed historical range and writes a slimmed, gzip-compressed JSONL slice, with
   exponential backoff on rate limits. `--mode full` prints instructions for the
   FDA quarterly-dump path used at full-corpus scale.
-- **Loader** (`src/loader.py`) — parses the slice into one row per report with
+- **Loader** (`src/loader.py`): parses the slice into one row per report with
   the severity label, receive year, demographics, and drug/reaction lists.
-- **Features** (`src/features.py`) — symbolic feature blocks (demographics,
+- **Features** (`src/features.py`): symbolic feature blocks (demographics,
   reporter context, drug-role counts, a known-high-risk-drug flag, and top-K
   drug/reaction/indication bags), with a fit/apply split so the vocabulary is
   learned on the training window only.
-- **Model** (`src/model.py`) — a LightGBM classifier; raw (uncalibrated)
+- **Model** (`src/model.py`): a LightGBM classifier; raw (uncalibrated)
   probabilities.
-- **Evaluation** (`src/evaluate.py`) — AUROC and AUPRC for discrimination,
+- **Evaluation** (`src/evaluate.py`): AUROC and AUPRC for discrimination,
   Brier score and 10-bin ECE for calibration.
 
 ## How to run (demo)
@@ -81,13 +81,13 @@ The canonical demo run reproduces the contract in `expected_results.json`
 
 | Metric        | Demo target | Tolerance |
 |---------------|------------:|----------:|
-| AUROC         | 0.8885      | ±0.02     |
-| AUPRC         | 0.9546      | ±0.02     |
-| Brier score   | 0.1462      | ±0.02     |
-| ECE (10-bin)  | 0.1142      | ±0.03     |
+| AUROC         | 0.8885      | +/-0.02   |
+| AUPRC         | 0.9546      | +/-0.02   |
+| Brier score   | 0.1462      | +/-0.02   |
+| ECE (10-bin)  | 0.1142      | +/-0.03   |
 
 The demo slice is small and its serious-label prevalence shifts across the split
-(0.86 train vs 0.71 test), so calibration is loose — the public-method pipeline
+(0.86 train vs 0.71 test), so calibration is loose; the public-method pipeline
 applies no post-hoc calibrator. Discrimination (AUROC/AUPRC) is the headline
 measure.
 
@@ -95,9 +95,9 @@ measure.
 
 > The full internal FAERS severity pipeline augments this LightGBM baseline with
 > proprietary Rosenbound components (a patented causal-inference layer and an
-> ensemble head) on a multi-quarter corpus. The number in
-> `expected_results.json` → `internal_reference` (AUROC 0.8872) is from that
-> system and is not reproducible here. This reproducer is the leak-safe
+> ensemble head) on a multi-quarter corpus. The number in the
+> `internal_reference` block of `expected_results.json` (AUROC 0.8872) is from
+> that system and is not reproducible here. This reproducer is the leak-safe
 > public-method baseline only; the patented components are out of scope (see
 > [`../../docs/patent_scope.md`](../../docs/patent_scope.md)).
 

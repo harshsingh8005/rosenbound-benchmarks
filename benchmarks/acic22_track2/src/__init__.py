@@ -4,10 +4,10 @@ This package implements three published, non-proprietary causal-inference
 methods and a loader that reduces an ACIC22 Track-2 cohort to the
 ``(covariates, treatment, outcome)`` form the estimators consume:
 
-- :mod:`.aipw`        — cross-fitted augmented inverse-probability weighting.
-- :mod:`.dr_att`      — doubly-robust ATT with an overlap trim.
-- :mod:`.rosenbaum`   — Rosenbaum Gamma-sensitivity bound.
-- :mod:`.data_loader` — ACIC22 Track-2 cohort reader.
+- :mod:`.aipw`:         cross-fitted augmented inverse-probability weighting.
+- :mod:`.dr_att`:       doubly-robust ATT with an overlap trim.
+- :mod:`.rosenbaum`:    Rosenbaum Gamma-sensitivity bound.
+- :mod:`.data_loader`:  ACIC22 Track-2 cohort reader.
 """
 
 from .aipw import AipwResult, aipw_att

@@ -1,8 +1,8 @@
 """Turn the raw W1 cohort frame into a numeric model matrix.
 
 Feature engineering is split into a fit step and an apply step so that every
-data-dependent transform — the one-hot category vocabulary and the per-column
-imputation medians — is learned on the training fold only and replayed on
+data-dependent transform (the one-hot category vocabulary and the per-column
+imputation medians) is learned on the training fold only and replayed on
 held-out folds. Fitting these on the whole dataset would leak test-fold
 statistics into training and inflate the reported metrics; keeping the two
 steps separate makes the pipeline leakage-free by construction.
@@ -128,7 +128,7 @@ def build_features(frame: pd.DataFrame) -> pd.DataFrame:
     """Fit-and-transform in one call (whole-frame convenience, e.g. for EDA).
 
     This fits the imputer and encoder on the same ``frame`` it transforms, so it
-    must not be used to build train/test matrices for scoring — use the
+    must not be used to build train/test matrices for scoring; use the
     :func:`build_features_fit` / :func:`build_features_apply` pair there.
     """
     X, _ = build_features_fit(frame)

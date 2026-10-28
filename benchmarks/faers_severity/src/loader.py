@@ -71,8 +71,8 @@ def resolve_demo_slice(path: str | os.PathLike[str] | None = None) -> Path:
                 return p
     raise FileNotFoundError(
         f"FAERS demo slice not found (looked at {DEMO_SLICE}). Fetch it first: "
-        "python -m benchmarks.faers_severity.src.fetch — see "
-        "benchmarks/faers_severity/README.md."
+        "python -m benchmarks.faers_severity.src.fetch (see "
+        "benchmarks/faers_severity/README.md)."
     )
 
 

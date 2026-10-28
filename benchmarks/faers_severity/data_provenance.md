@@ -1,4 +1,4 @@
-# FAERS severity — data provenance
+# FAERS severity: data provenance
 
 ## Source
 
@@ -18,7 +18,7 @@ Two acquisition paths, both public:
 
 The committed demo slice (`data/faers_demo_slice.jsonl.gz`, ~3,700 reports) was
 built by `src/fetch.py` from the openFDA API over two fixed historical
-receive-date windows — 2012 (training) and 2013 (test). Older windows are stable
+receive-date windows: 2012 (training) and 2013 (test). Older windows are stable
 (no ongoing backfill), so the same query returns the same reports and the demo
 stays reproducible. Only the fields the pipeline consumes are retained, so the
 slice is small enough to commit. Because FAERS is public domain, the slice is

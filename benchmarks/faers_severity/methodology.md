@@ -1,4 +1,4 @@
-# FAERS severity — methodology
+# FAERS severity: methodology
 
 This document describes the public methods the FAERS reproducer uses. None are
 proprietary; the patented components of the Rosenbound platform (a causal-
@@ -27,7 +27,7 @@ point can inform the model:
 - The top-K drug / reaction / indication vocabularies are ranked over the
   **training window only**. Ranking them over the full corpus would let
   test-era frequencies (for example, a newly frequent drug) select feature
-  columns — a temporal leak. `tests/test_leak_free.py` asserts a token seen only
+  columns (a temporal leak). `tests/test_leak_free.py` asserts a token seen only
   in the test window never becomes a feature.
 - The age-imputation median is fit on the training window and replayed on the
   test window.
@@ -35,17 +35,17 @@ point can inform the model:
 
 ## Features
 
-All features are classical and symbolic — no learned text embeddings:
+All features are classical and symbolic (no learned text embeddings):
 
-- **Demographics** — age in years (normalized from the openFDA age unit,
+- **Demographics**: age in years (normalized from the openFDA age unit,
   median-imputed), an age-missing flag, one-hot sex.
-- **Reporter context** — healthcare-professional and consumer flags (from the
+- **Reporter context**: healthcare-professional and consumer flags (from the
   reporter qualification code) and a US-country flag.
-- **Report structure** — distinct drug-role counts (suspect / concomitant /
+- **Report structure**: distinct drug-role counts (suspect / concomitant /
   interacting, from `drugcharacterization`), a known-high-risk-drug flag
   (case-insensitive substring match against a fixed list of narrow-therapeutic-
   index drugs), and distinct reaction and indication counts.
-- **Top-K bags** — presence indicators for the most frequent drugs, reactions,
+- **Top-K bags**: presence indicators for the most frequent drugs, reactions,
   and indications in the training window.
 
 ## Model and metrics
@@ -54,9 +54,9 @@ A **LightGBM** gradient-boosted-trees classifier produces raw probabilities; no
 post-hoc calibrator is applied in the public baseline. Metrics on the held-out
 later window:
 
-- **AUROC** and **AUPRC** (average precision) — discrimination. AUPRC is
+- **AUROC** and **AUPRC** (average precision): discrimination. AUPRC is
   reported alongside AUROC because the severity classes are imbalanced.
-- **Brier score** and **10-bin expected calibration error (ECE)** — calibration.
+- **Brier score** and **10-bin expected calibration error (ECE)**: calibration.
 
 The expected values and tolerances are pinned in `expected_results.json`.
 

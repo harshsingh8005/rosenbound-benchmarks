@@ -24,7 +24,7 @@
     }
   },
   "internal_reference": {
-    "note": "The full internal system (which additionally uses an instrumental-variables estimator, a deep counterfactual estimator, and a paired Rosenbaum inversion) achieves the numbers below across all 3,400 cohorts. That system is commercial; the reproducer above uses three public-domain methods on a 100-cohort sample and approaches, but does not match, these figures. Contact the maintainers for a platform demonstration.",
+    "note": "The full internal system (which additionally uses an instrumental-variables estimator, a deep counterfactual estimator, and a paired Rosenbaum inversion) achieves the numbers below across all 3,400 cohorts. That system is proprietary; the reproducer above uses three public-domain methods on a 100-cohort sample and approaches, but does not match, these figures. Contact the maintainers for a platform demonstration.",
     "internal_full_lock": {
       "bias": 19.26,
       "rmse": 28.80,

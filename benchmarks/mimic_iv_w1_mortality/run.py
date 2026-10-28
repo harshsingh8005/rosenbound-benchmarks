@@ -11,7 +11,7 @@ deaths, so a single train/test split gives a metric dominated by which three or
 four deaths land in the test fold. The reproducer instead pools out-of-fold
 predictions from a stratified K-fold cross-validation, so every admission is
 scored exactly once by a model that never saw it, and repeats the whole
-cross-validation over many seeds and averages — turning a high-variance number
+cross-validation over many seeds and averages, turning a high-variance number
 into a stable, reproducible one. Within each training fold a further stratified
 split is held out to fit the calibrator, so calibration never sees fold-test
 labels.

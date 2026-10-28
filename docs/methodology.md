@@ -14,22 +14,22 @@ and interval calibration.
 
 **Estimators.**
 
-- **AIPW** (augmented inverse-probability weighting) — combines an outcome
+- **AIPW** (augmented inverse-probability weighting): combines an outcome
   regression with a propensity model so the estimate stays consistent when
   either nuisance model is correctly specified.
-- **DR-ATT** — a doubly-robust average-treatment-effect-on-the-treated
+- **DR-ATT**: a doubly-robust average-treatment-effect-on-the-treated
   estimator over the region of covariate overlap.
-- **Rosenbaum sensitivity** — quantifies how strong an unobserved confounder
-  would need to be (the Γ bound) to overturn the estimated effect.
+- **Rosenbaum sensitivity**: quantifies how strong an unobserved confounder
+  would need to be (the Gamma bound) to overturn the estimated effect.
 
 **Metrics.** For each cohort the estimator produces a point estimate and an
 uncertainty interval. Aggregated across all cohorts:
 
-- **Bias** — mean signed error of the point estimate against the known effect.
-- **RMSE** — root-mean-square error of the point estimate.
-- **Coverage** — fraction of cohorts whose 95% interval contains the true
+- **Bias**: mean signed error of the point estimate against the known effect.
+- **RMSE**: root-mean-square error of the point estimate.
+- **Coverage**: fraction of cohorts whose 95% interval contains the true
   effect (a well-calibrated interval is near 0.95).
-- **Average width** — mean width of the uncertainty intervals.
+- **Average width**: mean width of the uncertainty intervals.
 
 Each cohort's panel is reduced to a cross-sectional problem with a
 practice-level difference-in-differences change score before estimation, and
@@ -51,7 +51,7 @@ vital and lab aggregates, median-imputed. The comorbidity index,
 Charlson 1987 weights) built **only from the subject's prior admissions
 discharged before the current admit time**. This matters because
 `hosp/diagnoses_icd` carries no timestamp and its rows are discharge-coded
-billing diagnoses of the admission — counting the current admission's diagnoses
+billing diagnoses of the admission; counting the current admission's diagnoses
 would leak information unavailable at the 24-hour prediction point. The encoder
 vocabulary and imputation medians are fit on training folds only.
 
@@ -64,9 +64,9 @@ calibrator so that predicted probabilities align with observed event rates.
 
 **Metrics.**
 
-- **AUROC** — area under the receiver-operating-characteristic curve on the
+- **AUROC**: area under the receiver-operating-characteristic curve on the
   held-out test split, measuring discrimination.
-- **ECE** — expected calibration error, the average gap between predicted
+- **ECE**: expected calibration error, the average gap between predicted
   probability and observed frequency across probability bins, measuring
   calibration quality.
 
@@ -79,13 +79,13 @@ Each reproducer distinguishes what an outside party can verify from what remains
 proprietary. Four levels apply across the repository:
 
 - **Demo.** Runs on open MIMIC-IV demo data or a sampled FAERS slice. Fully
-  verifiable in continuous integration — a `git clone` plus `pip install`
+  verifiable in continuous integration: a `git clone` plus `pip install`
   reproduces the pinned numbers. This is the only tier the committed targets and
   tolerances gate.
 - **Credentialed public-method.** The same public-method pipeline (LightGBM +
   Beta calibration, no proprietary components) run on a full credentialed
-  corpus. Expected values are recorded as future work — unpinned until validated
-  across independent runs — so results at this level are informational rather
+  corpus. Expected values are recorded as future work, unpinned until validated
+  across independent runs, so results at this level are informational rather
   than gated. See the `credentialed_public_method` key in each
   `expected_results.json`.
 - **Externally verified.** Third-party-certified metrics

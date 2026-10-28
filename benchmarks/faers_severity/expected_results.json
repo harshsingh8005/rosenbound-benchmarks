@@ -4,7 +4,7 @@
     "n_reports": 3700,
     "cohort": "one row per adverse-event report",
     "label": "serious (openFDA `serious` field: death | hospitalization | disability | life-threatening | congenital anomaly)",
-    "split": "temporal — receive year < 2013 train (2012), >= 2013 test (2013)",
+    "split": "temporal: receive year < 2013 train (2012), >= 2013 test (2013)",
     "seed": 42,
     "protocol": "leak-safe temporal split; top-K drug/reaction/indication vocabulary ranked on the training window only; LightGBM classifier, raw (uncalibrated) probabilities"
   },

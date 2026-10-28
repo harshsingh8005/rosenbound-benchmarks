@@ -1,12 +1,12 @@
 """Turn the FAERS report cohort into a numeric model matrix.
 
 Feature construction is split into a fit step and an apply step. Everything
-data-dependent — the top-K drug / reaction / indication vocabularies and the
-age-imputation median — is learned in the fit step, which the caller runs on the
+data-dependent (the top-K drug / reaction / indication vocabularies and the
+age-imputation median) is learned in the fit step, which the caller runs on the
 **training window only**. The apply step replays that fitted vocabulary on any
 fold. Because the vocabulary never sees the test window, no test-era statistic
 (e.g. a drug that only becomes frequent later) can influence which columns exist
-— the temporal analogue of the leak this repository's W1 fix removed.
+(the temporal analogue of the leak this repository's W1 fix removed).
 
 Feature blocks (all classical and symbolic, no learned embeddings):
 
@@ -45,7 +45,7 @@ _CONSUMER_QUALS = {"5"}
 _US_COUNTRY = {"US", "USA", "UNITED STATES"}
 
 # Well-known narrow-therapeutic-index / serious-outcome drugs, matched as
-# case-insensitive substrings of the reported product name. Interpretable flag,
+# case-insensitive substrings of the reported drug name. Interpretable flag,
 # not a learned feature.
 HIGH_RISK_SUBSTRINGS = (
     "WARFARIN", "METHOTREXATE", "DIGOXIN", "INSULIN", "LITHIUM",

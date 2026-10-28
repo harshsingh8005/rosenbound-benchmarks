@@ -7,6 +7,11 @@ repos:
         entry: python tools/check_no_ai_attribution.py
         language: system
         pass_filenames: true
+      - id: check_ascii_text
+        name: Plain ASCII in text files
+        entry: python tools/check_ascii_text.py
+        language: system
+        pass_filenames: true
       - id: check_commit_msg_attribution
         name: No AI-attribution in commit messages
         entry: python tools/check_no_ai_attribution.py --commit-msg

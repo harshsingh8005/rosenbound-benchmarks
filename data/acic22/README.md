@@ -29,14 +29,14 @@ reproducer iterates over:
 
 ```
 data/acic22/
-├── track2_20220404.zip         the downloaded archive (git-ignored)
-├── track2/
-│   ├── practice/               practice-level covariates, per cohort
-│   └── practice_year/          practice-by-year outcome + treatment, per cohort
-└── ACIC_estimand_truths.csv    ground-truth SATT per cohort
+|-- track2_20220404.zip         the downloaded archive (git-ignored)
+|-- track2/
+|   |-- practice/               practice-level covariates, per cohort
+|   `-- practice_year/          practice-by-year outcome + treatment, per cohort
+`-- ACIC_estimand_truths.csv    ground-truth SATT per cohort
 ```
 
-There are 3,400 cohorts (`acic_practice_0001.csv` … `acic_practice_3400.csv`).
+There are 3,400 cohorts (`acic_practice_0001.csv` ... `acic_practice_3400.csv`).
 The reproducer resolves the extracted `track2/` root relative to this
 directory. Keep the archive alongside the extracted tree so the checksum can be
 re-verified.

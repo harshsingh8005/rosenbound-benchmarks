@@ -26,15 +26,15 @@ each practice's time-invariant level differences out and, under parallel trends
 conditional on the covariates, the effect of treatment on this change score
 identifies the SATT.
 
-- **AIPW** (`src/aipw.py`) — cross-fitted augmented inverse-probability
+- **AIPW** (`src/aipw.py`): cross-fitted augmented inverse-probability
   weighting for the effect on the treated; consistent if either the propensity
   model or the outcome model is correct. Robins, Rotnitzky & Zhao (1994);
   Bang & Robins (2005); Chernozhukov et al. (2018).
-- **DR-ATT** (`src/dr_att.py`) — doubly-robust ATT restricted to the region of
+- **DR-ATT** (`src/dr_att.py`): doubly-robust ATT restricted to the region of
   covariate overlap via a Crump trim, which bounds the inverse-propensity
   weights. Hahn (1998); Crump et al. (2009); Farrell (2015).
-- **Rosenbaum sensitivity** (`src/rosenbaum.py`) — the Gamma bound: how strong
-  an unmeasured confounder would have to be to explain the estimate away,
+- **Rosenbaum sensitivity** (`src/rosenbaum.py`): the Gamma bound (how strong
+  an unmeasured confounder would have to be to explain the estimate away),
   computed with a documented widening-bound simplification. Rosenbaum (2002),
   Ch. 4.
 
@@ -78,7 +78,7 @@ tolerance band; the run fails on drift beyond it.
 ## Interpretation
 
 The estimand is small relative to the year-to-year variation in the change
-score, so per-cohort estimates are noisy and the intervals under-cover — an
+score, so per-cohort estimates are noisy and the intervals under-cover, an
 honest reflection of what public doubly-robust methods achieve on these panels.
 DR-ATT, which trims to the overlap region, is the more accurate and better
 calibrated of the two arms. The reproduced numbers approach, without matching,
@@ -88,9 +88,10 @@ the internal figures recorded in `expected_results.json`.
 
 > The full internal system (which additionally uses an instrumental-variables
 > estimator, a deep counterfactual estimator, and a paired Rosenbaum inversion)
-> achieves tighter numbers than the three methods reproduced here — see
-> `expected_results.json` → `internal_reference`. Those extensions are
-> commercial; contact the maintainers for a platform demonstration.
+> achieves tighter numbers than the three methods reproduced here (see the
+> `internal_reference` block of `expected_results.json`). Those extensions are
+> proprietary and are not published here; contact the maintainers for a
+> platform demonstration.
 
 ## Data provenance
 
