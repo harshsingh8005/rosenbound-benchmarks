@@ -14,7 +14,7 @@
 # Jupyter
 **/.ipynb_checkpoints/
 
-# Datasets — never committed; see data/{source}/README.md for acquisition
+# Datasets: never committed; see data/{source}/README.md for acquisition
 **/data/acic22/*.csv
 **/data/acic22/*.zip
 **/data/mimic_iv/**

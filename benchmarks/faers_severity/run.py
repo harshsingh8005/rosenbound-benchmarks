@@ -7,8 +7,8 @@ AUPRC) and calibration (Brier, ECE) on the held-out later window.
 
 The temporal split is the point of the design: feature selection and model
 fitting see only reports from before the split year, so no later-era statistic
-can inform the prediction — the same leak-safety principle behind the W1
-Charlson fix, enforced here on the time axis.
+can inform the prediction (the same leak-safety principle behind the W1
+Charlson fix, enforced here on the time axis).
 
 Usage
 -----

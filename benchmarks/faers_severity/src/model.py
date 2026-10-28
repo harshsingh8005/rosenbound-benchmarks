@@ -1,8 +1,8 @@
 """LightGBM severity classifier for the FAERS reproducer.
 
 A classical gradient-boosted-trees classifier (LightGBM; Ke et al., 2017) over
-the symbolic FAERS feature matrix — no learned text embeddings anywhere in the
-path, matching the interpretable public-method baseline. The parameters suit a
+the symbolic FAERS feature matrix (no learned text embeddings anywhere in the
+path), matching the interpretable public-method baseline. The parameters suit a
 few-thousand-row slice with a wide sparse top-K bag: shallow trees, column
 subsampling, and L2 leaf regularisation. All randomness is pinned to
 ``random_state`` and the fit is single-threaded, so a fold reproduces

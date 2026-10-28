@@ -3,13 +3,13 @@
 The reproducer predicts in-hospital mortality for ICU admissions in MIMIC-IV
 using only published, non-proprietary methods:
 
-- :mod:`.loader`      — assemble the first-24h ICU-admission cohort from the
+- :mod:`.loader`:       assemble the first-24h ICU-admission cohort from the
                         MIMIC-IV hospital and ICU tables.
-- :mod:`.features`    — turn the raw cohort frame into a typed model matrix.
-- :mod:`.model`       — a gradient-boosted-trees classifier (LightGBM).
-- :mod:`.calibration` — standalone Beta calibration with a Bayesian
+- :mod:`.features`:     turn the raw cohort frame into a typed model matrix.
+- :mod:`.model`:        a gradient-boosted-trees classifier (LightGBM).
+- :mod:`.calibration`:  standalone Beta calibration with a Bayesian
                         (L2-MAP) smoothing prior.
-- :mod:`.evaluate`    — discrimination and calibration metrics.
+- :mod:`.evaluate`:     discrimination and calibration metrics.
 """
 
 from .loader import W1Cohort, load_w1_cohort, resolve_demo_root

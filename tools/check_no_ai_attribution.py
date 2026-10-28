@@ -25,7 +25,7 @@ Two invocation modes
 Exit codes: 0 = clean, 1 = forbidden pattern found, 2 = usage error.
 
 A line carrying the inline escape token (matched as a substring, so either
-``# hygiene-allow`` or ``// hygiene-allow`` works) is exempt — reserved for
+``# hygiene-allow`` or ``// hygiene-allow`` works) is exempt, reserved for
 legitimate references such as a genuine runtime dependency, never to
 silence a real attribution leak.
 

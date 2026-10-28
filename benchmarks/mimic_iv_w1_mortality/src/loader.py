@@ -15,20 +15,20 @@ on the full credentialed corpus when pointed at it (see the module README).
 
 Only these tables are read, all gzip-compressed CSVs:
 
-- ``hosp/admissions``  — admit/discharge times, admission type/location,
+- ``hosp/admissions``:   admit/discharge times, admission type/location,
                           insurance, ``hospital_expire_flag`` (the label).
-- ``hosp/patients``    — ``gender`` and ``anchor_age``.
-- ``hosp/labevents``   — laboratory measurements (subset of itemids below).
-- ``hosp/diagnoses_icd`` — coded diagnoses of *prior* admissions, reduced to a
+- ``hosp/patients``:     ``gender`` and ``anchor_age``.
+- ``hosp/labevents``:    laboratory measurements (subset of itemids below).
+- ``hosp/diagnoses_icd``:  coded diagnoses of *prior* admissions, reduced to a
                           Charlson comorbidity index (see below).
-- ``icu/icustays``     — ICU stay windows (``intime``/``outtime``).
-- ``icu/chartevents``  — bedside vitals (subset of itemids below).
+- ``icu/icustays``:      ICU stay windows (``intime``/``outtime``).
+- ``icu/chartevents``:   bedside vitals (subset of itemids below).
 
 ``diagnoses_icd`` records carry no timestamp and reflect discharge-coded billing
 diagnoses, so the diagnoses of the *current* admission are not known at the 24h
 prediction point. The comorbidity feature (``charlson_history``) is therefore
 built only from admissions whose discharge precedes the current admission's
-admit time — history that is fully coded and available before the current stay
+admit time: history that is fully coded and available before the current stay
 begins. First-in-cohort admissions get ``charlson_history`` = 0.
 
 The loader returns numeric first-24h aggregates plus the categorical
@@ -153,7 +153,7 @@ def resolve_demo_root(data_root: str | os.PathLike[str] | None = None) -> Path:
     raise FileNotFoundError(
         "MIMIC-IV demo tables not found (looked for hosp/admissions.csv.gz "
         f"under {[str(c) for c in candidates]}). Fetch them first: "
-        "python data/mimic_iv/fetch.py — see data/mimic_iv/README.md."
+        "python data/mimic_iv/fetch.py (see data/mimic_iv/README.md)."
     )
 
 
@@ -198,8 +198,8 @@ def _charlson_history(
 
     For every cohort admission, gather the diagnoses of that subject's other
     admissions whose ``dischtime`` precedes the cohort admission's ``admittime``
-    — the only diagnoses guaranteed coded and available before the current stay
-    begins — and score them with :func:`~.charlson.charlson_index`. Admissions
+    (the only diagnoses guaranteed coded and available before the current stay
+    begins) and score them with :func:`~.charlson.charlson_index`. Admissions
     with no such prior history score 0.
 
     Returns a Series indexed by ``hadm_id`` aligned to ``cohort``.

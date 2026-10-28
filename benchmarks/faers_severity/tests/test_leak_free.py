@@ -60,7 +60,7 @@ def test_apply_never_introduces_test_derived_columns():
     X_train, state = build_features_fit(frame[frame["year"] == 2012])
     X_test = build_features_apply(frame[frame["year"] == 2013], state)
 
-    # The test matrix has exactly the training columns — a test-only token that
+    # The test matrix has exactly the training columns: a test-only token that
     # is unseen in training contributes an all-zero (already-known) column, not
     # a new feature.
     assert list(X_test.columns) == list(X_train.columns)

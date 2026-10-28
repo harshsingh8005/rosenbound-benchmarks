@@ -2,8 +2,8 @@
 
 The model is LightGBM (Ke et al., 2017). Its defaults are tuned for large
 datasets; the parameters here are set for the small, class-imbalanced W1
-cohort — shallow trees, few leaves, a floor on leaf occupancy, and L2 leaf
-regularisation — so the fit does not memorise a hundred-row training fold. All
+cohort (shallow trees, few leaves, a floor on leaf occupancy, and L2 leaf
+regularisation) so the fit does not memorise a hundred-row training fold. All
 randomness is pinned to ``random_state`` and the fit is single-threaded, so a
 given fold reproduces bit-for-bit.
 """

@@ -12,7 +12,7 @@ against the codes of the matching ``icd_version`` (9 or 10).
 
 Three category pairs are hierarchical: the more severe member suppresses the
 milder one when both are present in the same code list, matching Quan's
-algorithm — complicated diabetes suppresses uncomplicated diabetes, severe liver
+algorithm. Complicated diabetes suppresses uncomplicated diabetes, severe liver
 disease suppresses mild liver disease, and metastatic tumour suppresses any
 (non-metastatic) malignancy.
 """

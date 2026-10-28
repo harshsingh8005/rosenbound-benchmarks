@@ -12,7 +12,7 @@ miscalibration a boosted-trees model typically shows.
 
 On the small W1 validation folds an unregularised fit is unstable, so the
 parameters are estimated by maximum a posteriori under a zero-mean Gaussian
-prior — equivalent to L2-regularised logistic regression. The prior is the
+prior (equivalent to L2-regularised logistic regression). The prior is the
 "Bayes" smoothing: it shrinks the calibrator toward the identity map when the
 fold carries little information, and vanishes as the fold grows. A fold with a
 single label class carries no calibration signal at all and the calibrator
