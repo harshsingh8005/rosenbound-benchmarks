@@ -15,5 +15,8 @@ jobs:
       - name: Attribution check (tracked files)
         run: python tools/check_no_ai_attribution.py $(git ls-files)
 
+      - name: Plain ASCII check (tracked files)
+        run: python tools/check_ascii_text.py $(git ls-files)
+
       - name: Patent-scope check
         run: python tools/check_patent_scope.py
