@@ -3,8 +3,8 @@
 ## What this repository is
 
 This is a public reproducer for specific benchmark claims made by the
-Rosenbound Clinical AI platform. It exists so that anyone — a reviewer, a
-prospective design partner, an independent researcher — can clone the code,
+Rosenbound Clinical AI platform. It exists so that anyone (a reviewer, a
+prospective design partner, an independent researcher) can clone the code,
 provision the underlying public or credentialed-public datasets, run a single
 notebook, and independently confirm a headline number rather than take it on
 trust. The scope of this repository is benchmark **verification only**; the
@@ -13,18 +13,18 @@ memory components, is proprietary and is not published here.
 
 Three benchmarks are covered:
 
-- **ACIC22 Track-2** — the 2022 Atlantic Causal Inference Conference causal
+- **ACIC22 Track-2**: the 2022 Atlantic Causal Inference Conference causal
   estimation challenge (public data).
-- **MIMIC-IV W1 in-hospital mortality** — a calibrated in-hospital mortality
+- **MIMIC-IV W1 in-hospital mortality**: a calibrated in-hospital mortality
   classifier on MIMIC-IV v3.1 (credentialed-public data).
-- **FAERS severity** — a serious-adverse-event classifier on FDA Adverse Event
+- **FAERS severity**: a serious-adverse-event classifier on FDA Adverse Event
   Reporting System data (public data, openFDA API + FDA quarterly dumps).
 
 ## Recent updates
 
-**2026-07-09 — Leak fix + FAERS addition.** During external review,
+**2026-07-09: Leak fix + FAERS addition.** During external review,
 `n_diagnoses` (from `hosp/diagnoses_icd`) was identified as a data-leakage
-feature — that table has no timestamp and its records are discharge-coded
+feature: that table has no timestamp and its records are discharge-coded
 billing diagnoses, unknowable at the 24-hour prediction point. We replaced it
 with `charlson_history`, a Charlson comorbidity index computed only from a
 subject's prior admissions, and re-locked the demo targets (the AUROC decreased,
@@ -84,23 +84,23 @@ the conda environment from `environment.yml`).
 
 ```
 rosenbound-benchmarks/
-├── README.md                     This file
-├── LICENSE                       MIT license
-├── CITATION.cff                  Machine-readable citation metadata
-├── requirements.txt              Pinned pip dependencies
-├── environment.yml               Conda environment (Python 3.11)
-├── .github/workflows/            CI: reproduces each benchmark on a schedule
-├── data/                         Per-source data acquisition instructions
-│   ├── acic22/                   ACIC22 Track-2 canonical download
-│   └── mimic_iv/                 MIMIC-IV v3.1 / PhysioNet access
-├── benchmarks/                   One directory per reproducible claim
-│   ├── acic22_track2/            Causal challenge reproducer
-│   ├── mimic_iv_w1_mortality/    Mortality classifier reproducer
-│   └── faers_severity/           Adverse-event severity reproducer
-└── docs/                         Methodology, provenance, patent scope
+|-- README.md                     This file
+|-- LICENSE                       MIT license
+|-- CITATION.cff                  Machine-readable citation metadata
+|-- requirements.txt              Pinned pip dependencies
+|-- environment.yml               Conda environment (Python 3.11)
+|-- .github/workflows/            CI: reproduces each benchmark on a schedule
+|-- data/                         Per-source data acquisition instructions
+|   |-- acic22/                   ACIC22 Track-2 canonical download
+|   `-- mimic_iv/                 MIMIC-IV v3.1 / PhysioNet access
+|-- benchmarks/                   One directory per reproducible claim
+|   |-- acic22_track2/            Causal challenge reproducer
+|   |-- mimic_iv_w1_mortality/    Mortality classifier reproducer
+|   `-- faers_severity/           Adverse-event severity reproducer
+`-- docs/                         Methodology, provenance, patent scope
 ```
 
-Data files are never committed to this repository — only the instructions to
+Data files are never committed to this repository, only the instructions to
 obtain them. Each benchmark directory carries a `run.py` entry point, an
 `expected_results.json` contract, a `notebook.ipynb`, and a local `README.md`.
 
@@ -110,21 +110,21 @@ This repository is explicit about what an outside party can verify versus what
 remains proprietary. Four levels apply:
 
 - **Demo.** Runs on open MIMIC-IV demo data, a sampled FAERS slice, or the
-  public ACIC22 release. Fully verifiable in CI — `git clone` plus
+  public ACIC22 release. Fully verifiable in CI: `git clone` plus
   `pip install` reproduces the pinned numbers. This is the only level the
   committed targets and tolerances gate.
 - **Credentialed public-method.** The same public-method pipeline run on a full
   credentialed corpus (e.g. the 546K-admission MIMIC-IV corpus). Expected values
-  are recorded as future work — unpinned until validated across independent runs
-  — so results here are informational rather than gated. See the
+  are recorded as future work, unpinned until validated across independent runs,
+  so results here are informational rather than gated. See the
   `credentialed_public_method` key in each `expected_results.json`.
 - **Externally verified.** Third-party-certified metrics
   for the full-corpus proprietary pipeline, obtained without exposing source, via
   two routes now in setup:
-  - **MedPerf (MLCommons)** — a versioned Docker container runs on data-owner
+  - **MedPerf (MLCommons)**: a versioned Docker container runs on data-owner
     infrastructure against fixed data; MLCommons certifies the output while the
     model internals stay inside the container.
-  - **ACIC Data Challenge** — a predictions-only submission (counterfactuals and
+  - **ACIC Data Challenge**: a predictions-only submission (counterfactuals and
     intervals, no code) scored by the organizers against held-out ground truth.
   Both routes are in setup; results will be linked here when live.
 - **Internal (proprietary).** The closed Rosenbound pipeline, not reproducible
@@ -138,12 +138,12 @@ remains proprietary. Four levels apply:
 > underlying Rosenbound platform includes proprietary components covered by
 > USPTO provisional patent AGI-PROV-01 (filed 2026-03-22, docket AGI-PROV-01,
 > sole inventor Harsh Singh). The following modules are OUT OF SCOPE for this
-> repository: the Differentiable Causal Inference Engine (DCIE — patent
+> repository: the Differentiable Causal Inference Engine (DCIE, patent
 > Claim 2, comprising Neural Feature Extractor + DCSL + IS + NCAAP), the
-> Verifiable Bounded Self-Modification framework (VBSM — Claim 3), the
-> Persistent Self-Improving Memory (PSIM — Claim 1), the Modular Cognitive
-> Substrate (MCS — Claim 4, including IMCP and SMCE), and the Hybrid Neuro-
-> Symbolic Integration mechanisms (HNSI — Claim 5, comprising EPT + BGB +
+> Verifiable Bounded Self-Modification framework (VBSM, Claim 3), the
+> Persistent Self-Improving Memory (PSIM, Claim 1), the Modular Cognitive
+> Substrate (MCS, Claim 4, including IMCP and SMCE), and the Hybrid Neuro-
+> Symbolic Integration mechanisms (HNSI, Claim 5, comprising EPT + BGB +
 > CGETA + MCLR). Where a Rosenbound benchmark uses one of those modules in the
 > closed platform, this reproducer substitutes a public equivalent (e.g.,
 > AIPW / DR-ATT / IV-2SLS / Rosenbaum sensitivity for the causal Pentagon's
@@ -166,7 +166,7 @@ this repository:
 ```bibtex
 @software{singh_rosenbound_benchmarks_2026,
   author  = {Singh, Harsh},
-  title   = {Rosenbound Benchmarks — Reproducers for Clinical AI Platform Claims},
+  title   = {Rosenbound Benchmarks: Reproducers for Clinical AI Platform Claims},
   version = {0.1.0},
   year    = {2026},
   url     = {https://github.com/harshsingh8005/rosenbound-benchmarks}
@@ -175,7 +175,7 @@ this repository:
 
 ## Contact
 
-Harsh Singh — <harsh22@bu.edu>
+Harsh Singh <harsh22@bu.edu>
 
 Questions, reproduction issues, and discrepancy reports are welcome on the
 [issue tracker](https://github.com/harshsingh8005/rosenbound-benchmarks/issues).

@@ -9,7 +9,7 @@ do with the data once it is on disk.
 
 | Source          | Version / scope                         | Access               |
 |-----------------|-----------------------------------------|----------------------|
-| MIMIC-IV        | v3.1 — 546K admissions / 364K patients  | PhysioNet credentialed |
+| MIMIC-IV        | v3.1 (546K admissions / 364K patients)  | PhysioNet credentialed |
 | ACIC22 Track-2  | 3,400-cohort canonical                  | public               |
 | FAERS           | 2.83M-row backfill                      | public (future work) |
 
@@ -36,14 +36,14 @@ treated (SATT), taken from the challenge's estimand-truth table.
 stay of a hospital admission**: ICU stays are ordered by intake time and the
 earliest is kept for each admission. The label is in-hospital expiry recorded on
 the admission (`hospital_expire_flag`). Two feature blocks are measured strictly
-within the first 24 hours of the ICU stay — the vital and lab aggregates — and
+within the first 24 hours of the ICU stay (the vital and lab aggregates), and
 the demographic descriptors (age, gender, admission type/location, insurance)
 are fixed at admission. The comorbidity feature, `charlson_history`, is a
 Charlson index (Quan 2005 code sets, Charlson 1987 weights) computed **only from
 the subject's prior admissions whose discharge precedes the current admit
 time**; it uses no code from the current admission. This matters because
 `hosp/diagnoses_icd` carries no timestamp and its rows are discharge-coded
-billing diagnoses — using the current admission's diagnosis count would leak
+billing diagnoses; using the current admission's diagnosis count would leak
 information unavailable at the 24-hour prediction point (a leak identified in
 external review and corrected here; see `RELEASE_NOTES.md`). No post-prediction
 information enters the feature set. The one-hot vocabulary and imputation medians

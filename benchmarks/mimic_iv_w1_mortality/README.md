@@ -2,8 +2,8 @@
 
 ## What this reproduces
 
-The **W1** benchmark predicts **in-hospital mortality** — death during the
-hospital stay — for intensive-care admissions in **MIMIC-IV** (Johnson et al.,
+The **W1** benchmark predicts **in-hospital mortality** (death during the
+hospital stay) for intensive-care admissions in **MIMIC-IV** (Johnson et al.,
 2023). The cohort is the first ICU stay of each hospital admission; the label
 is the admission's `hospital_expire_flag`. Every predictor is measured within
 the first 24 hours of the ICU stay, so nothing from after the prediction point
@@ -16,12 +16,12 @@ any access to the closed platform. It runs out of the box on the open-access
 
 ## Methods
 
-- **Classifier** (`src/model.py`) — LightGBM gradient-boosted trees (Ke et al.,
+- **Classifier** (`src/model.py`): LightGBM gradient-boosted trees (Ke et al.,
   2017), parameterised for a small, class-imbalanced cohort.
-- **Calibration** (`src/calibration.py`) — Beta calibration (Kull, Silva Filho
+- **Calibration** (`src/calibration.py`): Beta calibration (Kull, Silva Filho
   & Flach, 2017) fit by maximum a posteriori under a Gaussian prior (L2), so the
   recalibration is stable on small validation folds.
-- **Evaluation** (`src/evaluate.py`) — AUROC and average precision for
+- **Evaluation** (`src/evaluate.py`): AUROC and average precision for
   discrimination; Brier score and 10-bin expected calibration error (ECE) for
   calibration.
 
@@ -75,28 +75,28 @@ The canonical demo run reproduces the contract in `expected_results.json`
 
 | Metric            | Demo target | Tolerance |
 |-------------------|------------:|----------:|
-| AUROC             | 0.6197      | ±0.05     |
-| Average precision | 0.2069      | ±0.05     |
-| Brier score       | 0.1056      | ±0.02     |
-| ECE (10-bin)      | 0.0472      | ±0.02     |
+| AUROC             | 0.6197      | +/-0.05   |
+| Average precision | 0.2069      | +/-0.05   |
+| Brier score       | 0.1056      | +/-0.02   |
+| ECE (10-bin)      | 0.0472      | +/-0.02   |
 
 ## Interpretation
 
 The demo cohort is two orders of magnitude smaller than the full corpus, so its
-discrimination is both lower and noisier than the full-corpus figure — an
+discrimination is both lower and noisier than the full-corpus figure, an
 honest reflection of what 130 admissions support. The value of the demo run is
 that it is a working, checkable pipeline: the Beta + Bayes calibrator measurably
 tightens calibration (it roughly halves the uncalibrated ECE), and the whole
 thing is deterministic and public. The full-corpus AUROC recorded in
-`expected_results.json` → `internal_reference` is reached on the 546K-admission
-corpus, not on this demo.
+the `internal_reference` block of `expected_results.json` is reached on the
+546K-admission corpus, not on this demo.
 
 ## Internal vs public
 
 > The full internal system augments this pipeline with additional
-> risk-stratification and calibration components; the numbers in
-> `expected_results.json` → `internal_reference` are from that system on the
-> full 546K-admission corpus. Those extensions are commercial; contact the
+> risk-stratification and calibration components; the numbers in the
+> `internal_reference` block of `expected_results.json` are from that system on
+> the full 546K-admission corpus. Those extensions are commercial; contact the
 > maintainers for a platform demonstration.
 
 ## Data provenance
