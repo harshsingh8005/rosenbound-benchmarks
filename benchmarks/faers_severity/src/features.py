@@ -45,7 +45,7 @@ _CONSUMER_QUALS = {"5"}
 _US_COUNTRY = {"US", "USA", "UNITED STATES"}
 
 # Well-known narrow-therapeutic-index / serious-outcome drugs, matched as
-# case-insensitive substrings of the reported product name. Interpretable flag,
+# case-insensitive substrings of the reported drug name. Interpretable flag,
 # not a learned feature.
 HIGH_RISK_SUBSTRINGS = (
     "WARFARIN", "METHOTREXATE", "DIGOXIN", "INSULIN", "LITHIUM",

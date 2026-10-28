@@ -90,7 +90,8 @@ the internal figures recorded in `expected_results.json`.
 > estimator, a deep counterfactual estimator, and a paired Rosenbaum inversion)
 > achieves tighter numbers than the three methods reproduced here (see the
 > `internal_reference` block of `expected_results.json`). Those extensions are
-> commercial; contact the maintainers for a platform demonstration.
+> proprietary and are not published here; contact the maintainers for a
+> platform demonstration.
 
 ## Data provenance
 

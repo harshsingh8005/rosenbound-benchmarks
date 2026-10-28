@@ -96,8 +96,8 @@ the `internal_reference` block of `expected_results.json` is reached on the
 > The full internal system augments this pipeline with additional
 > risk-stratification and calibration components; the numbers in the
 > `internal_reference` block of `expected_results.json` are from that system on
-> the full 546K-admission corpus. Those extensions are commercial; contact the
-> maintainers for a platform demonstration.
+> the full 546K-admission corpus. Those extensions are proprietary and are not
+> published here; contact the maintainers for a platform demonstration.
 
 ## Data provenance
 
